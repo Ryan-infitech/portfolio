@@ -79,7 +79,7 @@ const Contact: React.FC = () => {
                     Location
                   </h4>
                   <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                    San Francisco, CA, United States
+                    Padang, ID, Indonesia
                   </p>
                 </div>
               </div>
@@ -94,7 +94,7 @@ const Contact: React.FC = () => {
                     Email
                   </h4>
                   <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                    contact@example.com
+                    rianseptiawan@infitech.or.id
                   </p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ const Contact: React.FC = () => {
                     Phone
                   </h4>
                   <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
-                    +1 (555) 123-4567
+                    +6285157517798
                   </p>
                 </div>
               </div>
@@ -121,7 +121,7 @@ const Contact: React.FC = () => {
               </h3>
               <div className="flex space-x-3 sm:space-x-4">
                 <motion.a
-                  href="https://github.com"
+                  href="https://github.com/Ryan-infitech"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors"
@@ -158,7 +158,7 @@ const Contact: React.FC = () => {
                   </svg>
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com"
+                  href="www.linkedin.com/in/rian-septiawan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors"
@@ -199,42 +199,46 @@ const Contact: React.FC = () => {
                   </svg>
                 </motion.a>
                 <motion.a
-                  href="https://twitter.com"
+                  href="https://instagram.com/ryan.septiawan__"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors"
+                  className="p-2 sm:p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="sm:hidden"
-                  >
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="hidden sm:block"
-                  >
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                </motion.a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="sm:hidden"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="hidden sm:block"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </motion.a>
               </div>
             </div>
           </motion.div>
