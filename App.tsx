@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { ThemeProvider } from "./context/ThemeContext"; 
-import Navbar from "./components/Navbar";
-import HorizontalScroll from "./components/HorizontalScroll";
-import Home from "./components/sections/Home";
-import About from "./components/sections/About";
-import Projects from "./components/sections/Projects";
-import Experience from "./components/sections/Experience";
-import Contact from "./components/sections/Contact";
+import { ThemeProvider } from "./src/context/ThemeContext";
+import Navbar from "./src/components/Navbar";
+import HorizontalScroll from "./src/components/HorizontalScroll";
+import Home from "./src/components/sections/Home";
+import About from "./src/components/sections/About";
+import Projects from "./src/components/sections/Projects";
+import Experience from "./src/components/sections/Experience";
+import Contact from "./src/components/sections/Contact";
 
 function App() {
   const [currentSection, setCurrentSection] = useState(0);
