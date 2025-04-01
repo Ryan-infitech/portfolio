@@ -1,28 +1,28 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "../../data";
-import { ExternalLink, Github, X, Filter } from "lucide-react";
+import { ExternalLink, Github, Filter } from "lucide-react";
 
-const Projects: React.FC = () => {
-  const [activeProject, setActiveProject] = useState<number | null>(null);
-  const [filter, setFilter] = useState<string>("all");
+const Projects = () => {
+  const [filter, setFilter] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
 
-  // Get unique technology tags from all projects
+  // Get unique technology tags
   const allTechnologies = useMemo(() => {
-    const techSet = new Set<string>();
+    const techSet = new Set();
     projects.forEach((project) => {
       project.technologies.forEach((tech) => techSet.add(tech));
     });
     return Array.from(techSet).sort();
   }, []);
 
-  // Filter projects based on selected filter
+  // Filter projects
   const filteredProjects = useMemo(() => {
     if (filter === "all") return projects;
     return projects.filter((project) => project.technologies.includes(filter));
   }, [filter]);
 
+  // Animation variants
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -39,8 +39,9 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <section className="min-h-full w-full bg-gray-50 dark:bg-gray-800 px-3 sm:px-6 py-8 sm:py-10 md:py-16 overflow-y-auto">
+    <section className="min-h-full w-full bg-gray-50 dark:bg-gray-800 px-3 sm:px-6 py-8 sm:py-10 md:py-16 overflow-x-hidden">
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -136,73 +137,67 @@ const Projects: React.FC = () => {
           Showing {filteredProjects.length} of {projects.length} projects
         </motion.p>
 
-        {/* Projects Grid */}
+        {/* Projects Grid - Individual project cards */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {filteredProjects.map((project) => (
             <motion.div
               key={project.id}
               variants={item}
-              className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow flex flex-col h-full"
+              className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow flex flex-col w-full"
               whileHover={{ y: -5 }}
             >
+              {/* Project card image section */}
               <div
-                className="h-36 sm:h-44 md:h-48 bg-cover bg-center"
+                className="h-40 bg-cover bg-center"
                 style={{ backgroundImage: `url(${project.image})` }}
               >
-                <div className="h-full w-full bg-black bg-opacity-30 p-2 sm:p-3 md:p-4 flex flex-col justify-between">
-                  <div className="flex flex-wrap gap-1 sm:gap-2 justify-end">
-                    {project.technologies.slice(0, 2).map((tech, index) => (
+                <div className="h-full w-full bg-black bg-opacity-30 p-3 flex flex-col justify-between">
+                  {/* Technologies badges */}
+                  <div className="flex flex-wrap gap-1 justify-end">
+                    {project.technologies.slice(0, 3).map((tech, index) => (
                       <span
                         key={index}
-                        className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-black/40 backdrop-blur-sm text-white text-xs rounded-md"
+                        className="px-1.5 py-0.5 bg-black/40 backdrop-blur-sm text-white text-xs rounded-md"
                       >
                         {tech}
                       </span>
                     ))}
-                    {project.technologies.length > 2 && (
-                      <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-black/40 backdrop-blur-sm text-white text-xs rounded-md">
-                        +{project.technologies.length - 2}
+                    {project.technologies.length > 3 && (
+                      <span className="px-1.5 py-0.5 bg-black/40 backdrop-blur-sm text-white text-xs rounded-md">
+                        +{project.technologies.length - 3}
                       </span>
                     )}
                   </div>
-
-                  <motion.button
-                    className="self-center px-3 py-1 sm:px-4 sm:py-2 mt-auto bg-indigo-600/90 backdrop-blur-sm text-white rounded-md font-medium text-xs sm:text-sm hover:bg-indigo-700"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setActiveProject(project.id)}
-                  >
-                    View Details
-                  </motion.button>
                 </div>
               </div>
 
-              <div className="p-3 sm:p-4 md:p-6 flex flex-col flex-grow">
-                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">
+              {/* Project card content section */}
+              <div className="p-4 flex flex-col flex-grow">
+                <h3 className="text-base font-bold text-gray-800 dark:text-white mb-2">
                   {project.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 line-clamp-3 flex-grow text-xs sm:text-sm">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-xs">
                   {project.description}
                 </p>
 
-                <div className="mt-auto flex space-x-2 sm:space-x-3">
+                {/* Action buttons */}
+                <div className="mt-auto flex gap-3">
                   {project.github && (
                     <motion.a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 sm:p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
-                      whileHover={{ scale: 1.1 }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs"
                       whileTap={{ scale: 0.95 }}
                       aria-label="View GitHub Repository"
                     >
-                      <Github size={16} className="sm:hidden" />
-                      <Github size={18} className="hidden sm:block" />
+                      <Github size={14} />
+                      <span>View Code</span>
                     </motion.a>
                   )}
 
@@ -211,13 +206,12 @@ const Projects: React.FC = () => {
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1.5 sm:p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30"
-                      whileHover={{ scale: 1.1 }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs"
                       whileTap={{ scale: 0.95 }}
                       aria-label="Visit Live Website"
                     >
-                      <ExternalLink size={16} className="sm:hidden" />
-                      <ExternalLink size={18} className="hidden sm:block" />
+                      <ExternalLink size={14} />
+                      <span>Live Demo</span>
                     </motion.a>
                   )}
                 </div>
@@ -231,150 +225,21 @@ const Projects: React.FC = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-8 sm:py-12"
+            className="text-center py-8"
           >
-            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-4">
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
               No projects found with the selected filter. Try another technology
               filter.
             </p>
             <motion.button
               onClick={() => setFilter("all")}
-              className="px-4 py-2 sm:px-6 sm:py-2 bg-indigo-600 text-white rounded-md text-sm sm:text-base"
-              whileHover={{ scale: 1.05 }}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm"
               whileTap={{ scale: 0.95 }}
             >
               Show All Projects
             </motion.button>
           </motion.div>
         )}
-
-        {/* Project Details Modal */}
-        <AnimatePresence>
-          {activeProject !== null && (
-            <motion.div
-              className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-3 sm:p-4 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActiveProject(null)}
-            >
-              <motion.div
-                className="bg-white dark:bg-gray-900 rounded-xl overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {projects.find((p) => p.id === activeProject) && (
-                  <>
-                    <div className="relative">
-                      <div
-                        className="h-48 sm:h-64 md:h-72 bg-cover bg-center"
-                        style={{
-                          backgroundImage: `url(${
-                            projects.find((p) => p.id === activeProject)?.image
-                          })`,
-                        }}
-                      >
-                        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-                      </div>
-                      <motion.button
-                        className="absolute top-3 sm:top-4 right-3 sm:right-4 p-1.5 sm:p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70"
-                        onClick={() => setActiveProject(null)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <X size={18} className="sm:hidden" />
-                        <X size={20} className="hidden sm:block" />
-                      </motion.button>
-                    </div>
-
-                    <div className="p-4 sm:p-6 md:p-8">
-                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-4">
-                        {projects.find((p) => p.id === activeProject)?.title}
-                      </h3>
-
-                      <p className="text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">
-                        {
-                          projects.find((p) => p.id === activeProject)
-                            ?.description
-                        }
-                      </p>
-
-                      <div className="mb-6 sm:mb-8">
-                        <h4 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-3 sm:mb-4">
-                          Technologies
-                        </h4>
-                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                          {projects
-                            .find((p) => p.id === activeProject)
-                            ?.technologies.map((tech, index) => (
-                              <span
-                                key={index}
-                                className="px-2 py-1 sm:px-3 sm:py-1.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-md text-xs sm:text-sm"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-3 sm:gap-4">
-                        {projects.find((p) => p.id === activeProject)
-                          ?.github && (
-                          <motion.a
-                            href={
-                              projects.find((p) => p.id === activeProject)
-                                ?.github
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-800 dark:bg-gray-700 text-white rounded-lg flex items-center text-xs sm:text-sm"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Github
-                              size={16}
-                              className="mr-1.5 sm:mr-2 sm:hidden"
-                            />
-                            <Github
-                              size={20}
-                              className="mr-2 hidden sm:block"
-                            />
-                            View Code
-                          </motion.a>
-                        )}
-
-                        {projects.find((p) => p.id === activeProject)?.link && (
-                          <motion.a
-                            href={
-                              projects.find((p) => p.id === activeProject)?.link
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 sm:px-6 sm:py-3 bg-indigo-600 dark:bg-indigo-500 text-white rounded-lg flex items-center text-xs sm:text-sm"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <ExternalLink
-                              size={16}
-                              className="mr-1.5 sm:mr-2 sm:hidden"
-                            />
-                            <ExternalLink
-                              size={20}
-                              className="mr-2 hidden sm:block"
-                            />
-                            Live Demo
-                          </motion.a>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                )}
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );

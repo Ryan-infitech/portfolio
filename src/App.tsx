@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ThemeProvider } from "./context/ThemeContext"; 
+import { ThemeProvider } from "./context/ThemeContext";
+import { ModalProvider } from "./context/ModalContext";
 import Navbar from "./components/Navbar";
 import HorizontalScroll from "./components/HorizontalScroll";
 import Home from "./components/sections/Home";
@@ -14,25 +15,27 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="font-sans antialiased dark:bg-gray-900 overflow-hidden h-screen w-screen touch-auto">
-        <Navbar
-          currentSection={currentSection}
-          setCurrentSection={setCurrentSection}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-        />
+      <ModalProvider>
+        <div className="font-sans antialiased dark:bg-gray-900 overflow-hidden h-screen w-screen touch-auto">
+          <Navbar
+            currentSection={currentSection}
+            setCurrentSection={setCurrentSection}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+          />
 
-        <HorizontalScroll
-          currentSection={currentSection}
-          setCurrentSection={setCurrentSection}
-        >
-          <Home onNavigate={setCurrentSection} />
-          <About />
-          <Projects />
-          <Experience />
-          <Contact />
-        </HorizontalScroll>
-      </div>
+          <HorizontalScroll
+            currentSection={currentSection}
+            setCurrentSection={setCurrentSection}
+          >
+            <Home onNavigate={setCurrentSection} />
+            <About />
+            <Projects />
+            <Experience />
+            <Contact />
+          </HorizontalScroll>
+        </div>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useWindowSize } from "react-use";
+import { useModal } from "../context/ModalContext";
 
 interface HorizontalScrollProps {
   children: React.ReactNode[];
@@ -21,6 +22,7 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
   const [isScrolling, setIsScrolling] = useState(false);
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const { isModalOpen } = useModal(); // Get modal state from context
   const scrollCooldown = 800; // ms cooldown between horizontal scrolls
   const navbarHeight = 72; // estimated height of navbar in pixels
 
@@ -79,10 +81,15 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
     const minSwipeDistance = 50;
 
     const handleTouchStart = (e: TouchEvent) => {
+      // Don't process touch events when a modal is open
+      if (isModalOpen) return;
       touchStartX = e.changedTouches[0].screenX;
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      // Don't process touch events when a modal is open
+      if (isModalOpen) return;
+
       touchEndX = e.changedTouches[0].screenX;
       const distance = touchStartX - touchEndX;
 
@@ -111,6 +118,9 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
 
     // For mouse wheel
     const handleWheel = (e: WheelEvent) => {
+      // Don't process wheel events when a modal is open
+      if (isModalOpen) return;
+
       const now = Date.now();
       const section = sectionRefs.current[currentSection];
 
@@ -158,6 +168,9 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't process key events when a modal is open
+      if (isModalOpen) return;
+
       const now = Date.now();
 
       if (now - lastScrollTime > scrollCooldown && !isScrolling) {
@@ -193,6 +206,7 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
     lastScrollTime,
     isScrolling,
     setCurrentSection,
+    isModalOpen, // Added isModalOpen dependency
   ]);
 
   const calculateX = () => {
@@ -221,23 +235,25 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
           ))}
         </motion.div>
 
-        {/* Navigation Dots */}
-        <div className="fixed bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3 z-40 px-2 py-1 md:py-1.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full">
-          {children.map((_, index) => (
-            <motion.button
-              key={index}
-              className={`w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full ${
-                currentSection === index
-                  ? "bg-indigo-600 dark:bg-indigo-400"
-                  : "bg-gray-300 dark:bg-gray-600"
-              }`}
-              onClick={() => setCurrentSection(index)}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={`Go to section ${index + 1}`}
-            />
-          ))}
-        </div>
+        {/* Navigation Dots - Hide when modal is open */}
+        {!isModalOpen && (
+          <div className="fixed bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 md:space-x-3 z-40 px-2 py-1 md:py-1.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-full">
+            {children.map((_, index) => (
+              <motion.button
+                key={index}
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full ${
+                  currentSection === index
+                    ? "bg-indigo-600 dark:bg-indigo-400"
+                    : "bg-gray-300 dark:bg-gray-600"
+                }`}
+                onClick={() => setCurrentSection(index)}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                aria-label={`Go to section ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
