@@ -1,0 +1,6 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Specify sitemap location
+Sitemap: https://rianseptiawan.vercel.app/sitemap.xml
