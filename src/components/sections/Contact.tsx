@@ -13,7 +13,6 @@ import {
   ArrowRight,
   Loader2,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
 
 // Define status types for form submission
 type SubmissionStatus = "idle" | "loading" | "success" | "error";
@@ -38,37 +37,32 @@ const Contact: React.FC = () => {
     });
   };
 
-  // Get environment variables or use fallbacks
-  const emailJsServiceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || process.env.REACT_APP_EMAILJS_SERVICE_ID || "service_56qcwe8";
-  const emailJsTemplateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "template_6eisz2e";
-  const emailJsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "fVfYEdrXmFF5vWH5w";
+  // API URL for both dev and production
+  const API_URL = "/api/contact"; // This works both in Vercel production and local development with vercel dev
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formRef.current) return;
 
     try {
       // Set loading state
       setStatus("loading");
 
-      // Make sure form field names match EmailJS template variables
-      const templateParams = {
-        from_name: formState.name,
-        from_email: formState.email,
-        subject: formState.subject,
-        message: formState.message,
-      };
+      // Send data to backend API
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      });
 
-      // Send email using EmailJS with the configuration
-      const result = await emailjs.sendForm(
-        emailJsServiceId,
-        emailJsTemplateId,
-        formRef.current,
-        emailJsPublicKey
-      );
-      
-      console.log("Email sent successfully:", result.text);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      console.log("Email sent successfully:", data);
       setStatus("success");
 
       // Reset form after 3 seconds
@@ -85,11 +79,9 @@ const Contact: React.FC = () => {
       console.error("Email sending failed:", error);
       setStatus("error");
 
-      // Provide more specific error message if available
+      // Provide specific error message
       const errorMsg =
-        error?.text ||
-        error?.message ||
-        "Failed to send your message. Please try again later.";
+        error.message || "Failed to send your message. Please try again later.";
       setErrorMessage(errorMsg);
 
       // Reset error state after 5 seconds
